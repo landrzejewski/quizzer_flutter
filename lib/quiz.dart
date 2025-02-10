@@ -59,19 +59,12 @@ class _QuizState extends State<Quiz> {
 
   @override
   Widget build(BuildContext context) {
-    Widget? screen;
-
-    switch (activeScreen) {
-      case Screen.strat:
-        screen = WelcomeScreen(changeScreen);
-        break;
-      case Screen.questions:
-        screen = QuestionsScreen(onSelectAnswer: selectAnswer);
-        break;
-      case Screen.summary:
-        screen = SummaryScreen(selectedAnswers: selectedAnswers, onRestart: restart);
-        break;
-    }
+    Widget screen = switch (activeScreen) {
+      Screen.questions => QuestionsScreen(onSelectAnswer: selectAnswer),
+      Screen.summary =>
+        SummaryScreen(selectedAnswers: selectedAnswers, onRestart: restart),
+      _ => WelcomeScreen(changeScreen)
+    };
 
     // final screen = activeScreen == 'start'
     //     ? WelcomeScreen(changeScreen)
