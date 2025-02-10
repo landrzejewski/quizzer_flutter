@@ -15,10 +15,11 @@ class SummaryScreen extends StatelessWidget {
   List<Map<String, Object>> get summaryData {
     final List<Map<String, Object>> data = [];
     for (var index = 0; index < selectedAnswers.length; index++) {
+      final question = questions[index];
       data.add({
         'index': index,
-        'question': questions[index].text,
-        'validAnswer': questions[index].answers[0],
+        'question': question.text,
+        'validAnswer': question.answers[question.validAnswer],
         'selectedAnswer': selectedAnswers[index]
       });
     }
