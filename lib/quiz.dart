@@ -20,6 +20,8 @@ class Quiz extends StatefulWidget {
   dispose(): Executed by Flutter right before the Widget will be deleted (e.g., because it was displayed conditionally)
 */
 
+enum Screen { strat, questions, summary }
+
 class _QuizState extends State<Quiz> {
   // Widget? activeScreen;
 
@@ -30,12 +32,12 @@ class _QuizState extends State<Quiz> {
   // }
 
   List<String> selectedAnswers = [];
-  var activeScreen = 'start';
+  var activeScreen = Screen.strat;
 
   void changeScreen() {
     setState(() {
       // activeScreen = const QuestionsScreen();
-      activeScreen = 'questions';
+      activeScreen = Screen.questions;
     });
   }
 
@@ -43,7 +45,7 @@ class _QuizState extends State<Quiz> {
     selectedAnswers.add(answer);
     if (selectedAnswers.length == questions.length) {
       setState(() {
-        activeScreen = 'summary';
+        activeScreen = Screen.summary;
       });
     }
   }
@@ -51,20 +53,24 @@ class _QuizState extends State<Quiz> {
   void restart() {
     setState(() {
       selectedAnswers = [];
-      activeScreen = 'questions';
+      activeScreen = Screen.questions;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    Widget screen = WelcomeScreen(changeScreen);
+    Widget? screen;
 
-    if (activeScreen == 'questions') {
-      screen = QuestionsScreen(onSelectAnswer: selectAnswer);
-    }
-
-    if (activeScreen == 'summary') {
-      screen = SummaryScreen(selectedAnswers: selectedAnswers, onRestart: restart);
+    switch (activeScreen) {
+      case Screen.strat:
+        screen = WelcomeScreen(changeScreen);
+        break;
+      case Screen.questions:
+        screen = QuestionsScreen(onSelectAnswer: selectAnswer);
+        break;
+      case Screen.summary:
+        screen = SummaryScreen(selectedAnswers: selectedAnswers, onRestart: restart);
+        break;
     }
 
     // final screen = activeScreen == 'start'
